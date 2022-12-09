@@ -67,6 +67,9 @@ function toggle()
 function touchStarted(){
   background(255,255,255); //흰색배경
   text(touches.length,200,200); // 몇개의 손가락이 터치 되었는가?
+  if(length==0){
+    toggle();
+  }
   text(touches[0].x,200,220); //첫번째(1개) 손가락 X좌표
   text(touches[0].x,200,240); //첫번째(1개) 손가락 Y좌표
   text(touches[1].x,200,260); //두번째(2개) 손가락 X좌표
