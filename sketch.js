@@ -8,7 +8,7 @@ function setup(){
   if(typeof DeviceMotionEvent.requestPermission === "function"){
     //최신 ios인 경우
     background(255,0,0); //붉은 배경
-    button = creatButton("Click to iOS Sensor"); // 센서허용을 위한 변수
+    button = createButton("Click to iOS Sensor"); // 센서허용을 위한 변수
     button.mousePressed(iosAccess); // 버튼 누르면 iosAccess 함수로
   }else{
     // 최신 iOS가 아닌 다른 os 예: iOS저버전, 안드로이드, 윈도우, 맥
