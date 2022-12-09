@@ -11,12 +11,15 @@ function setup(){
 
   wave.freq(440);
   wave.amp(0);
-
+  
+  // 버튼을 눌렀을 때, 소리가 나오도록
   button2=createButton('play/pause');
   button2.mousePressed(toggle);
   
-  createCanvas(windowWidth, windowHeight);
+  //createCanvas(windowWidth, windowHeight);
+  createCanvas(displayWidth, displayHeight);
   // 윈도우 사이즈로 displayWidth displayHeight가능
+  //createCanvas(720,256);
   
   if(typeof DeviceMotionEvent.requestPermission === "function"){
     //최신 ios인 경우
@@ -59,4 +62,14 @@ function toggle()
     wave.amp(0,1);
     playing= false;
 }
+}
+
+function touchStarted(){
+  background(255,255,255); //흰색배경
+  text(touches.length,200,200); // 몇개의 손가락이 터치 되었는가?
+  text(touches[0].x,200,220); //첫번째(1개) 손가락 X좌표
+  text(touches[0].x,200,240); //첫번째(1개) 손가락 Y좌표
+  text(touches[1].x,200,260); //두번째(2개) 손가락 X좌표
+  text(touches[1].y,200,280); //두번째(2개) 손가락 Y좌표
+  
 }
