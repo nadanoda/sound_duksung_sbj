@@ -1,7 +1,20 @@
 let button; //센서 허용을 위한 버튼
 let permission = false; // 허가를 위한 변수 (기본은 허가가 안남)
+var wave;
+var button2;
+var playing = false;
 
 function setup(){
+    
+  wave = new p5.Oscillator();
+  wave.setType('sine');
+
+  wave.freq(440);
+  wave.amp(0);
+
+  button2=createButton('play/pause');
+  button2.mousePressed(toggle);
+  
   createCanvas(windowWidth, windowHeight);
   // 윈도우 사이즈로 displayWidth displayHeight가능
   
@@ -15,6 +28,7 @@ function setup(){
     background(0,255,0); // 녹색배경
     text("is not a ios", 100, 100); // 글자로 100, 100위치에 is not  a ios라고 씀
   }
+
 }
 
 function iosAccess(){//버튼 누르면 동작하는 함수(그냥 따라하기)
@@ -34,3 +48,15 @@ function draw(){
   text(rotationX, 100, 100); // 텍스트는 x회전값이고, 100 100 위치에 글자로 표기
 }
 
+function toggle()
+{
+  if(!playing){
+    wave.start();
+    wave.amp(0.5,1);
+    playing = true;
+  }
+  else{
+    wave.amp(0,1);
+    playing= false;
+}
+}
