@@ -1,78 +1,148 @@
-let button; //센서 허용을 위한 버튼
-let permission = false; // 허가를 위한 변수 (기본은 허가가 안남)
-var wave;
-var button2;
-var playing = false;
+let slider; // 슬라이더 생성
+var wave1; // 라
+var wave2; // 시
+var button;
+var playing=false;
+var value = 0; // 흔들리면 색이 바뀌기
+let bvalue = 0; // 버튼 누르기
 
 function setup(){
-    
-  wave = new p5.Oscillator();
-  wave.setType('sine');
-
-  wave.freq(440);
-  wave.amp(0);
+  createCanvas(windowWidth,windowHeight);
+  //라
+  wave1=new p5.Oscillator();
+  wave1.setType('sine');
+  wave1.freq(440);
+  wave1.amp(0);
+  //시
+  wave2=new p5.Oscillator();
+  wave2.setType('sine');
+  wave2.freq(490);
+  wave2.amp(0);
   
-  // 버튼을 눌렀을 때, 소리가 나오도록
-  button2=createButton('play/pause');
-  button2.mousePressed(toggle);
+  //버튼만들기
+  button=createButton('R');
+  button.mousePressed(toggle);
+  //
   
-  //createCanvas(windowWidth, windowHeight);
-  createCanvas(displayWidth, displayHeight);
-  // 윈도우 사이즈로 displayWidth displayHeight가능
-  //createCanvas(720,256);
+  // 슬라이더
+  //colorMode(HSB);
+  slider = createSlider(0, 360, 60, 40);
+  slider.position(10, 10);
+  slider.style('width', '80px');
+  background(value);
   
-  if(typeof DeviceMotionEvent.requestPermission === "function"){
-    //최신 ios인 경우
-    background(255,0,0); //붉은 배경
-    button = createButton("Click to iOS Sensor"); // 센서허용을 위한 변수
-    button.mousePressed(iosAccess); // 버튼 누르면 iosAccess 함수로
-  }else{
-    // 최신 iOS가 아닌 다른 os 예: iOS저버전, 안드로이드, 윈도우, 맥
-    background(0,255,0); // 녹색배경
-    text("is not a ios", 100, 100); // 글자로 100, 100위치에 is not  a ios라고 씀
-  }
-
-}
-
-function iosAccess(){//버튼 누르면 동작하는 함수(그냥 따라하기)
-  DeviceOrientationEvent.requestPermission()
-    .then((response) => {
-    if(response === "granted"){ //granted를 받으면
-      permission = true; // 허가가 true(허가남)
-    }
-  })
-  .catch(consloe.error);
 }
 
 function draw(){
-  if(!permission)return; // 허가 안나면 리턴
-  background(255,255,255); // 흰색배경
-  textSize(72); // 텍스트 픽셀 크기 72
-  text(rotationX, 100, 100); // 텍스트는 x회전값이고, 100 100 위치에 글자로 표기
-}
-
-function toggle()
-{
-  if(!playing){
-    wave.start();
-    wave.amp(0.5,1);
-    playing = true;
+  wave1.freq(slider.value());
+  if(playing){
+    background(255,0,255);
   }
   else{
-    wave.amp(0,1);
-    playing= false;
-}
+    background(51);
+  }
+  background(value);
+  console.log('draw');
+  fill(0,255,0);
+  //fill(0,255,255);
+  textAlign(CENTER,CENTER);
+  textSize(25);
+  
+  let val = slider.value();
+  background(val, 100, 100, 1);
+  
+  value=constrain(value -2,0,200)
+  
+    if (value > 10) {
+        text("Moving Device", width / 2, height / 2);
+    } else {
+        text("Device is Relaxed ", width / 2, height / 2);
+    }
+  
+  fill(bvalue);
+  rect(25, 25, 150, 150);
+  //describe('50-by-50 black rect turns white with touch event.');
+  
+  for(var i=0;i<touches.length;i++){
+    muti();  
+  }
 }
 
-function touchStarted(){
-  background(255,255,255); //흰색배경
-  text(touches.length,200,200); // 몇개의 손가락이 터치 되었는가?
-  if(length==0){
-    toggle();
-  }
-  text(touches[0].x,200,220); //첫번째(1개) 손가락 X좌표
-  text(touches[0].x,200,240); //첫번째(1개) 손가락 Y좌표
-  text(touches[1].x,200,260); //두번째(2개) 손가락 X좌표
-  text(touches[1].y,200,280); //두번째(2개) 손가락 Y좌표
-  
+function toggle(){
+  /*if(!playing){
+    wave1.start();
+    wave1.amp(0.5,1);
+    playing=true;
+    }
+  else{
+    wave1.amp(0,1);
+    playing=false;
+  }*/
 }
+
+function deviceMoved(){
+   value = constrain(value + 5, 0, 255)
+}
+
+/*function mousePressed() {
+  if (value === 0) {
+    value = 250;
+    wave1.start();
+    wave1.amp(0.5);
+  } else {
+    value = 0;
+    wave1.amp(0);
+  }
+}*/
+
+function touchStarted(){
+  value = 250;
+  wave1.start();
+  wave1.amp(0.5);
+  plating= true;
+}
+
+function touchEnded(){
+  value = 0;
+  wave1.amp(0);
+}
+
+function muti(){
+  text(touches.length, 200, 200);
+  text(touches[0].x, 200, 220);
+  text(touches[0].y, 200, 240);
+  text(touches[1].x, 200, 260);
+  text(touches[1].y, 200, 280);
+}
+
+/*function mousePressed() {
+  
+    if(!playing){
+    wave1.start();
+    wave1.amp(0.5,1);
+    playing=true;
+    }
+  } else {
+    wave1.amp(0,1);
+    playing=false;
+    
+  }
+}
+
+function mousePressed() {
+  if (bvalue === 0) {
+    bvalue = 100;
+    wave1.start();
+    wave1.amp(0.5);
+    /*if(!playing){
+    wave1.start();
+    wave1.amp(0.5,1);
+    playing=true;
+    }
+  } else {
+    //wave1.amp(0,1);
+    //playing=false;
+    bvalue = 255;
+    wave1.amp(0);
+  }
+}*/
