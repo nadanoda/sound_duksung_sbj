@@ -16,12 +16,12 @@ function setup(){
   //시
   wave2=new p5.Oscillator();
   wave2.setType('sine');
-  wave2.freq(490);
+  wave2.freq(200);
   wave2.amp(0);
   
   //버튼만들기
   button=createButton('R');
-  button.mousePressed(toggle);
+  button.touchStarted(toggle);
   //
   
   // 슬라이더
@@ -34,7 +34,7 @@ function setup(){
 }
 
 function draw(){
-  wave1.freq(slider.value());
+  //wave1.freq(slider.value());
   if(playing){
     background(255,0,255);
   }
@@ -61,11 +61,11 @@ function draw(){
   
   fill(bvalue);
   rect(25, 25, 150, 150);
-  //describe('50-by-50 black rect turns white with touch event.');
-  
   for(var i=0;i<touches.length;i++){
     muti();  
   }
+  
+  
 }
 
 function toggle(){
@@ -84,65 +84,60 @@ function deviceMoved(){
    value = constrain(value + 5, 0, 255)
 }
 
-/*function mousePressed() {
-  if (value === 0) {
-    value = 250;
-    wave1.start();
-    wave1.amp(0.5);
-  } else {
-    value = 0;
-    wave1.amp(0);
-  }
-}*/
-
 function touchStarted(){
-  value = 250;
+  bvalue = 150;
   wave1.start();
-  wave1.amp(0.5);
-  plating= true;
+  wave1.amp(100);
+  playing= true;
+  wave1.freq(slider.value());
+  deviceMoved();
 }
 
 function touchEnded(){
-  value = 0;
+  bvalue = 50;
   wave1.amp(0);
+  playing=false;
 }
+
 
 function muti(){
   text(touches.length, 200, 200);
-  text(touches[0].x, 200, 220);
-  text(touches[0].y, 200, 240);
-  text(touches[1].x, 200, 260);
-  text(touches[1].y, 200, 280);
 }
 
-/*function mousePressed() {
+
+
+
+/*function touchStarted(){
+  if(touches.length > 0 && touches.length < 2 ){
+  bvalue = 150;
+  wave1.start();
+  wave1.amp(100);
+  playing= true;
+  wave1.freq(slider.value());
+  deviceMoved();
+  }
+  else if(touches.length > 1 && touches.length < 3){
+  bvalue = 250;
+  wave2.start();
+  wave2.amp(10);
+  //playing= true;
+  wave2.freq(slider.value());
+  deviceMoved();
+  }
   
-    if(!playing){
-    wave1.start();
-    wave1.amp(0.5,1);
-    playing=true;
-    }
-  } else {
-    wave1.amp(0,1);
-    playing=false;
-    
-  }
 }
 
-function mousePressed() {
-  if (bvalue === 0) {
-    bvalue = 100;
-    wave1.start();
-    wave1.amp(0.5);
-    /*if(!playing){
-    wave1.start();
-    wave1.amp(0.5,1);
-    playing=true;
-    }
-  } else {
-    //wave1.amp(0,1);
-    //playing=false;
-    bvalue = 255;
-    wave1.amp(0);
+function touchEnded(){
+  if(touches.length > 0 && touches.length < 2 ){
+  bvalue = 50;
+  wave1.amp(0);
+  playing=false;
   }
+  else if(touches.length > 1 && touches.length < 3){
+  bvalue = 0;
+  wave2.amp(0);
+  playing=false;
+ }
 }*/
+
+
